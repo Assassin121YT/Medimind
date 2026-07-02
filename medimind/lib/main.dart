@@ -14,12 +14,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+
+    /*
+     returns a cupertino app with a material app
+     inside it so that during transition between pages,
+     the app uses the cupertino page transition animation
+     instead of the material page transition animation
+     
+    */
+    return MaterialApp( 
+      title: "Medimind",
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
-      home: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const HomePage(),
-        theme: lightMode, //TO DO: Implement dark mode toggle
+      theme: lightMode.copyWith(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
     );
   }
