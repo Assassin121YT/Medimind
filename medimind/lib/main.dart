@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'home_page.dart';
 import 'assets/themes/light_mode.dart';
-import 'assets/themes/dark_mode.dart';
 
 void main() {
   runApp(const MyApp());
