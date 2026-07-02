@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'home_page.dart';
+import 'main_page.dart';
 import 'assets/themes/light_mode.dart';
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     */
     return MaterialApp( 
       title: "Medimind",
-      home: HomePage(),
+      home: MainPage(),
       debugShowCheckedModeBanner: false,
       theme: lightMode.copyWith(
         pageTransitionsTheme: const PageTransitionsTheme(

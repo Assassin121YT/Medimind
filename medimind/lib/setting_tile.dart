@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// modular custom widget for a setting tile with a switch to toggle between true and false
+
 class TrueFalseSettingTile extends StatelessWidget {
   const TrueFalseSettingTile(this.settingName, this.onConditionChange, this.defaultValue);
 
