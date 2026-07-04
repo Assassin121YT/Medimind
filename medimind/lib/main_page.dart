@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'home_page.dart';
-import 'add_prescription.dart';
-import 'all_prescriptions.dart';
+import 'screens/home_page.dart';
+import 'screens/add_prescription.dart';
+import 'screens/all_prescriptions.dart';
 
 
 class MainPage extends StatefulWidget {

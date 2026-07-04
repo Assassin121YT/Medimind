@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'settings.dart';
+import 'package:medimind/screens/settings.dart';
 
-class AddPrescription extends StatefulWidget {
-  const AddPrescription({super.key});
+class AllPrescriptions extends StatefulWidget {
+  const AllPrescriptions({super.key});
 
   @override
-  State<AddPrescription> createState() => _AddPrescriptionState();
+  State<AllPrescriptions> createState() => _AllPrescriptionsState();
 }
 
-class _AddPrescriptionState extends State<AddPrescription> {
+class _AllPrescriptionsState extends State<AllPrescriptions> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-           drawer: Drawer(
+    return Scaffold(          drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
         child: Column(
           children: [
@@ -40,12 +39,11 @@ class _AddPrescriptionState extends State<AddPrescription> {
           ],
         ),
       ),
-
       appBar: AppBar(
-        title: const Text('Add Prescription'),
+        title: const Text('All Prescriptions'),
       ),
       body: const Center(
-        child: Text('Add Prescription Page'),
+        child: Text('All Prescriptions Page'),
       ),
     );
   }

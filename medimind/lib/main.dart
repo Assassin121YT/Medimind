@@ -2,8 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'main_page.dart';
 import 'assets/themes/light_mode.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'hiveModels/medicine.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized(); // ensures that the flutter engine is initialized before running the app
+
+  // initialize Hive
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(MedicineAdapter()); // register the Medicine adapter
+  await Hive.openBox<Medicine>('prescriptions');
+
+  // initialize hive box for storing the prescriptions
+  var box = await Hive.openBox('prescriptions');
+
   runApp(const MyApp());
 }
 

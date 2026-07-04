@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medimind/settings.dart';
+import 'package:medimind/screens/settings.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
-class AllPrescriptions extends StatefulWidget {
-  const AllPrescriptions({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<AllPrescriptions> createState() => _AllPrescriptionsState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _AllPrescriptionsState extends State<AllPrescriptions> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(          drawer: Drawer(
+    return Scaffold(
+
+     // the drawer to navigate to the settings page and other pages in the future
+     drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
         child: Column(
           children: [
@@ -39,11 +43,15 @@ class _AllPrescriptionsState extends State<AllPrescriptions> {
           ],
         ),
       ),
+
       appBar: AppBar(
-        title: const Text('All Prescriptions'),
+        title: const Text('Home Page'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
+
+      // placeholder till the home page is implemented
       body: const Center(
-        child: Text('All Prescriptions Page'),
+        child: Text('Welcome to the Home Page'),
       ),
     );
   }

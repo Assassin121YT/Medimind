@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:medimind/setting_tile.dart';
+import 'package:medimind/screens/setting_tile.dart';
 import 'dart:developer' as developer;
 
 class Settings extends StatefulWidget {
