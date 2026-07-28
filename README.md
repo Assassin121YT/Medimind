@@ -44,7 +44,6 @@ Medimind is a Flutter application that helps users manage their medications by t
 flutter build apk        # Android
 flutter build ios        # iOS (requires macOS + Xcode)
 
-<Description>
 
 ## Features
 
