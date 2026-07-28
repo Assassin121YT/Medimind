@@ -13,10 +13,12 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(MedicineAdapter()); // register the Medicine adapter
-  await Hive.openBox<Medicine>('prescriptions');
 
   // initialize hive box for storing the prescriptions
-  var box = await Hive.openBox('prescriptions');
+  var box = await Hive.openBox<Medicine>('prescriptions');
+
+
+
 
   runApp(const MyApp());
 }
