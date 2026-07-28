@@ -1,5 +1,7 @@
 # Medimind
-An app used to input prescriptions for medicine with the time to take and the quantity of medicine the user has. Then it reminds the user when to take the medicine and keeps track of when to head to the pharmacy to buy more. It uses Flutter and Hive
+Medimind is a Flutter application that helps users manage their medications by tracking prescriptions, scheduling reminders, monitoring remaining pill quantities, and notifying users when it's time to refill their medicine. All prescription data is stored locally using Hive.
+
+🚧 This project is under active development.
 
 # Features:
 > Add a prescribed medicine
