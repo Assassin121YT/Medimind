@@ -1,9 +1,12 @@
 import 'dart:math' as developer;
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../main_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'settings.dart';
+import '../hiveModels/medicine.dart';
 
 class AddPrescription extends StatefulWidget {
   const AddPrescription({super.key});
@@ -14,9 +17,49 @@ class AddPrescription extends StatefulWidget {
 
 class _AddPrescriptionState extends State<AddPrescription> {
 
-  // initialize the box for use in this page
-  var _prescriptions = Hive.box('prescriptions');
+  // success dialog for when the prescription is saved successfully
+  void showSuccessDialog(){
+    showDialog(builder: (context) => AlertDialog(
+                title: Text('Prescription Saved'),
+                content: Text('The prescription has been saved successfully.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ), context: context,);
+  }
 
+  void showErrorDialog(String errorMessage){
+    showDialog(builder: (context) => AlertDialog(
+                title: Text('Error'),
+                content: Text(errorMessage),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ), context: context,);
+  }
+
+  // initialize the box for use in this page
+  var _prescriptions = Hive.box<Medicine>('prescriptions');
+
+  // text editing controllers for the text fields
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dosageController = TextEditingController();
+  final TextEditingController _frequencyController = TextEditingController();
+  final TextEditingController _timeOfDayController = TextEditingController();
+  final TextEditingController _courseLengthDayController = TextEditingController();
+
+  // boolean to check if the prescription saving process is in progress
+  bool isSaving = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +112,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _nameController,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                 labelText: 'Name on the box',
@@ -93,6 +137,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _dosageController,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                 labelText: 'How many units per time',
@@ -117,6 +162,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _frequencyController,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                 labelText: 'e.g. every day, every week, every 2 days, etc...',
@@ -141,6 +187,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
+              controller: _timeOfDayController,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                 labelText: 'e.g. after dinner, after waking up, 6 pm, etc...',
@@ -166,6 +213,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
+            controller: _courseLengthDayController,
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
             decoration: InputDecoration(
               labelText: 'e.g. 5 days, 2 weeks, 1 month, etc...',
@@ -177,26 +225,61 @@ class _AddPrescriptionState extends State<AddPrescription> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ElevatedButton(
-            onPressed: () {
-              // save the prescription to the box
-              _prescriptions.add({
-                'name': 'name',
-                'dosage': 'dosage',
-                'frequency': 'frequency',
-                'time': 'time',
-                'duration': 'duration',
-              });
-              // pop the page
-              Navigator.of(context).pop();
-            },
-            child: Text('Save Prescription'),
-          ),
-        ),
+
+           
         ],),
-      )
-      );
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: isSaving ? null : () async {
+              // set state to change the button to a circle progress indicator
+              setState(() => isSaving = true);
+
+              // save the prescription to the box
+              await _prescriptions.add(Medicine(
+                name: _nameController.text,
+                dosage: _dosageController.text,
+                frequency: _frequencyController.text,
+                timeOfDay: _timeOfDayController.text,
+                courseLengthDays: int.parse(_courseLengthDayController.text),
+              ));
+
+              print('Box now has ${_prescriptions.length} prescriptions');
+              print('Last item: ${_prescriptions.values.last.name}');
+              try{
+              
+              _nameController.clear();
+              _dosageController.clear();
+              _frequencyController.clear();
+              _timeOfDayController.clear();
+              _courseLengthDayController.clear();
+
+
+              // if the user is still on the same page, present the popup
+              if (mounted) {
+                showSuccessDialog();
+              }
+
+            }
+              catch(e){
+
+                print('Error: $e');
+
+                if (mounted){
+                  showErrorDialog("An error occurred while saving the prescription. Please try again");
+                }
+              }
+              finally{
+                // set state to change the button back to normal
+                setState(() => isSaving = false);
+              }},
+        child: isSaving ? SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.onPrimary,
+            strokeWidth: 3,
+          ),
+        ) : Icon(Icons.save),
+      ));
   }
 }
