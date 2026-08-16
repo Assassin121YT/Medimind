@@ -3,6 +3,7 @@ import 'dart:math' as developer;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../main_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'settings.dart';
@@ -206,17 +207,18 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Row(children: [
             Padding(
              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Duration of course', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+              child: Text('Duration of course in days', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
             ),
         ],),
-
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             controller: _courseLengthDayController,
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
             decoration: InputDecoration(
-              labelText: 'e.g. 5 days, 2 weeks, 1 month, etc...',
+              labelText: 'e.g. 5, 14, 30, etc...',
               labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -234,7 +236,14 @@ class _AddPrescriptionState extends State<AddPrescription> {
               // set state to change the button to a circle progress indicator
               setState(() => isSaving = true);
 
-              // save the prescription to the box
+              if (_nameController.text.isEmpty || _dosageController.text.isEmpty || _frequencyController.text.isEmpty || _timeOfDayController.text.isEmpty || _courseLengthDayController.text.isEmpty) {
+                // if any of the fields are empty, show an error dialog
+                showErrorDialog("Please fill in all the fields");
+                setState(() => isSaving = false);
+                return;
+              }
+
+              // save the prescription to the box            keyboardType: TextInputType.number,
               await _prescriptions.add(Medicine(
                 name: _nameController.text,
                 dosage: _dosageController.text,
