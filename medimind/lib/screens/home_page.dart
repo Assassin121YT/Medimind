@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medimind/screens/settings.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../hiveModels/medicine.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,8 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  var _prescriptions = Hive.box<Medicine>('prescriptions');
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
 
      // the drawer to navigate to the settings page and other pages in the future
@@ -45,14 +52,52 @@ class _HomePageState extends State<HomePage> {
       ),
 
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('My prescriptions'),
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
 
       // placeholder till the home page is implemented
-      body: const Center(
-        child: Text('Welcome to the Home Page'),
-      ),
-    );
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box<Medicine>('prescriptions').listenable(),
+        builder: (context, prescriptions, _) {
+          if (prescriptions.isEmpty) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Icon(Icons.inbox_outlined, size: 100, color: Theme.of(context).colorScheme.primary,),
+                ),
+                Center(
+                  child: Text('No prescriptions found.', style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                ),
+                SizedBox(height: 20,),
+                Center(
+                  child: Text('Please add a prescription to get started.', style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                ),
+              ],
+            );
+          } else {
+            return ListView.builder(
+              itemCount: _prescriptions.length,
+             itemBuilder: (context, index){
+              final medication = _prescriptions.getAt(index);
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: ListTile(
+                  title: Text(medication!.name, style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                  subtitle: Text('Dosage: ${medication.dosage}, Frequency: ${medication.frequency}', style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error,),
+                    onPressed: () {
+                      _prescriptions.deleteAt(index);
+                    },
+                  ),
+                ),
+              );
+             }
+            );
+          }
+        }
+      ),);
   }
 }
