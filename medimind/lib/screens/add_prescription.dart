@@ -187,7 +187,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
           Row(children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Frequency', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+              child: Text('Frequency in days', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
             ),
           ],),
         
@@ -195,6 +195,8 @@ class _AddPrescriptionState extends State<AddPrescription> {
             padding: const EdgeInsets.all(20.0),
             child: TextFormField(
               controller: _frequencyController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                 labelText: 'e.g. every day, every week, every 2 days, etc...',
@@ -276,7 +278,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
               await _prescriptions.add(Medicine(
                 name: _nameController.text,
                 dosage: _dosageController.text,
-                frequency: _frequencyController.text,
+                frequency: int.parse(_frequencyController.text),
                 timeOfDay: _selectedTime,
                 courseLengthDays: int.parse(_courseLengthDayController.text),
               ));

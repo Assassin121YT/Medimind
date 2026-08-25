@@ -15,7 +15,9 @@ void main() async {
   await Hive.initFlutter(); // delete the box from disk for testing purposes, remove this line in production
 
   Hive.registerAdapter(MedicineAdapter()); // register the Medicine adapter
-   // register the TimeOfDay adapter
+   
+
+  // Hive.deleteBoxFromDisk('prescriptions'); // delete the box from disk for testing purposes, remove this line in production
 
   // initialize hive box for storing the prescriptions
   var box = await Hive.openBox<Medicine>('prescriptions');
