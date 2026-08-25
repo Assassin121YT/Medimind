@@ -14,7 +14,7 @@ class Medicine extends HiveObject {
   String frequency;
 
   @HiveField(3)
-  String timeOfDay;
+  DateTime timeOfDay;
 
   @HiveField(4)
   int courseLengthDays;

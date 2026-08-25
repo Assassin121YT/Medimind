@@ -20,7 +20,7 @@ class MedicineAdapter extends TypeAdapter<Medicine> {
       name: fields[0] as String,
       dosage: fields[1] as String,
       frequency: fields[2] as String,
-      timeOfDay: fields[3] as String,
+      timeOfDay: fields[3] as DateTime,
       courseLengthDays: fields[4] as int,
     );
   }

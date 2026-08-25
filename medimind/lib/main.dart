@@ -9,10 +9,13 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized(); // ensures that the flutter engine is initialized before running the app
 
+   // delete the box from disk for testing purposes, remove this line in production
+
   // initialize Hive
   await Hive.initFlutter();
 
   Hive.registerAdapter(MedicineAdapter()); // register the Medicine adapter
+   // register the TimeOfDay adapter
 
   // initialize hive box for storing the prescriptions
   var box = await Hive.openBox<Medicine>('prescriptions');

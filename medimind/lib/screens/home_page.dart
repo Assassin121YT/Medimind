@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  var _prescriptions = Hive.box<Medicine>('prescriptions');
+  final _prescriptions = Hive.box<Medicine>('prescriptions');
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       ),
 
       appBar: AppBar(
-        title: const Text('My prescriptions'),
+        title: const Text('Dashboard'),
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
 
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                  child: Icon(Icons.inbox_outlined, size: 100, color: Theme.of(context).colorScheme.primary,),
+                  child: Icon(Icons.dashboard_customize_rounded, size: 100, color: Theme.of(context).colorScheme.primary,),
                 ),
                 Center(
                   child: Text('No prescriptions found.', style: TextStyle(color: Theme.of(context).colorScheme.primary),),

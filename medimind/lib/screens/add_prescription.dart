@@ -16,7 +16,39 @@ class AddPrescription extends StatefulWidget {
   State<AddPrescription> createState() => _AddPrescriptionState();
 }
 
+DateTime _selectedTime = DateTime.now();
+
 class _AddPrescriptionState extends State<AddPrescription> {
+
+  TimeOfDay _pickedTime = TimeOfDay.now();
+
+  void _showTimePicker() {
+  showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  ).then((value) {
+    if (value == null) return; // user cancelled the picker
+
+    final now = DateTime.now();
+    DateTime combined = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      value.hour,
+      value.minute,
+    );
+
+    // if the picked time has already passed today, roll to tomorrow
+    if (combined.isBefore(now)) {
+      combined = combined.add(const Duration(days: 1));
+    }
+
+    setState(() {
+      _pickedTime = value;      // keep this if you use it elsewhere for display
+      _selectedTime = combined; // this is what actually gets saved
+    });
+  });
+}
 
   // success dialog for when the prescription is saved successfully
   void showSuccessDialog(){
@@ -50,7 +82,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
   }
 
   // initialize the box for use in this page
-  var _prescriptions = Hive.box<Medicine>('prescriptions');
+  final _prescriptions = Hive.box<Medicine>('prescriptions');
 
   // text editing controllers for the text fields
   final TextEditingController _nameController = TextEditingController();
@@ -187,17 +219,15 @@ class _AddPrescriptionState extends State<AddPrescription> {
         
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: TextFormField(
-              controller: _timeOfDayController,
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              decoration: InputDecoration(
-                labelText: 'e.g. after dinner, after waking up, 6 pm, etc...',
-                labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("${_selectedTime.hour}:${_selectedTime.minute.toString().padLeft(2, '0')}", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primary),),
+                MaterialButton(
+                  onPressed: _showTimePicker,
+                  child: Text('Select Time', style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                 ),
-            
-              ),
+              ],
             ),
           ),
 
@@ -248,7 +278,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                 name: _nameController.text,
                 dosage: _dosageController.text,
                 frequency: _frequencyController.text,
-                timeOfDay: _timeOfDayController.text,
+                timeOfDay: _selectedTime,
                 courseLengthDays: int.parse(_courseLengthDayController.text),
               ));
 
