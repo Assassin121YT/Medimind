@@ -12,7 +12,7 @@ void main() async {
    // delete the box from disk for testing purposes, remove this line in production
 
   // initialize Hive
-  await Hive.initFlutter();
+  await Hive.initFlutter(); // delete the box from disk for testing purposes, remove this line in production
 
   Hive.registerAdapter(MedicineAdapter()); // register the Medicine adapter
    // register the TimeOfDay adapter

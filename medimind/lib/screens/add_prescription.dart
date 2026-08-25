@@ -88,7 +88,6 @@ class _AddPrescriptionState extends State<AddPrescription> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dosageController = TextEditingController();
   final TextEditingController _frequencyController = TextEditingController();
-  final TextEditingController _timeOfDayController = TextEditingController();
   final TextEditingController _courseLengthDayController = TextEditingController();
 
   // boolean to check if the prescription saving process is in progress
@@ -266,7 +265,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
               // set state to change the button to a circle progress indicator
               setState(() => isSaving = true);
 
-              if (_nameController.text.isEmpty || _dosageController.text.isEmpty || _frequencyController.text.isEmpty || _timeOfDayController.text.isEmpty || _courseLengthDayController.text.isEmpty) {
+              if (_nameController.text.isEmpty || _dosageController.text.isEmpty || _frequencyController.text.isEmpty || _courseLengthDayController.text.isEmpty) {
                 // if any of the fields are empty, show an error dialog
                 showErrorDialog("Please fill in all the fields");
                 setState(() => isSaving = false);
@@ -289,8 +288,9 @@ class _AddPrescriptionState extends State<AddPrescription> {
               _nameController.clear();
               _dosageController.clear();
               _frequencyController.clear();
-              _timeOfDayController.clear();
               _courseLengthDayController.clear();
+
+              _selectedTime = DateTime.now();
 
 
               // if the user is still on the same page, present the popup
